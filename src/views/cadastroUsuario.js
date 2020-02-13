@@ -1,6 +1,6 @@
 import React from 'react';
 import 'bootswatch/dist/flatly/bootstrap.css';
-import App from '../App';
+import App from '../main/App';
 import Card from '../compomentes/card';
 import FormGroup from '../compomentes/form-group';
 
@@ -19,7 +19,7 @@ cadastrar = () =>{
 
     render() {
         return (
-            <div className="container">
+
                 <Card title="Cadastro de Usuario"> 
                 <div className="row">
                     <div className="col-lg-12">
@@ -62,8 +62,7 @@ cadastrar = () =>{
                     </div>
                 </div>
            </Card>
-            </div>
-
+    
         )
     }
 }
