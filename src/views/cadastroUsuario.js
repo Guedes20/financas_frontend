@@ -3,6 +3,7 @@ import 'bootswatch/dist/flatly/bootstrap.css';
 import App from '../main/App';
 import Card from '../compomentes/card';
 import FormGroup from '../compomentes/form-group';
+import { withRouter} from 'react-router-dom';
 
 class CadastroUsuario extends React.Component {
     
@@ -15,6 +16,10 @@ class CadastroUsuario extends React.Component {
 
 cadastrar = () =>{
    console.log(this.state);
+}
+
+cancelar = () =>{
+    this.props.history.push('/login')
 }
 
     render() {
@@ -57,7 +62,7 @@ cadastrar = () =>{
                           </FormGroup>
 
                           <button onClick={this.cadastrar} className="btn btn-success">Salvar</button>
-                          <button className="btn btn-danger">Cancelar</button>
+                          <button onClick={this.cancelar} className="btn btn-danger">Cancelar</button>
                         </div>
                     </div>
                 </div>
@@ -67,4 +72,4 @@ cadastrar = () =>{
     }
 }
 
-export default CadastroUsuario;
+export default withRouter (CadastroUsuario);
