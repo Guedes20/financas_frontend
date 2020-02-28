@@ -3,8 +3,9 @@ import 'bootswatch/dist/flatly/bootstrap.css';
 import App from '../main/App';
 import Card from '../compomentes/card';
 import FormGroup from '../compomentes/form-group';
-import { withRouter} from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 import axios from 'axios';
+import UsuarioService from '../app/service/usuarioService';
 
 class Login extends React.Component {
 
@@ -15,15 +16,22 @@ class Login extends React.Component {
 
     }
 
-    entrar = async () => {
-        axios
-        .post('http://localhost:8080/api/usuarios/autenticar', {
+    constructor(){
+        super();
+        this.service = new UsuarioService();
+    }
+
+
+    entrar = () => {
+         this.service.autenticar({
             email: this.state.email,
             senha: this.state.senha
-        }).then( response => { 
+         }).then( response => { 
+            console.log(" Passou aqui")
             localStorage.setItem('_usuario_logado', JSON.stringify(response.data))
             this.props.history.push('/home')
-        }).catch(erro =>{
+        }).catch(erro => {
+            console.log(erro.response.data)
             this.setState({mensagem: erro.response.data})  
         })
     }
