@@ -6,6 +6,8 @@ import FormGroup from '../compomentes/form-group';
 import {withRouter} from 'react-router-dom';
 import axios from 'axios';
 import UsuarioService from '../app/service/usuarioService';
+import LocalStorageService from '../app/service/localstorageService';
+import { mensagemErro }  from '../compomentes/toast'
 
 class Login extends React.Component {
 
@@ -27,12 +29,10 @@ class Login extends React.Component {
             email: this.state.email,
             senha: this.state.senha
          }).then( response => { 
-            console.log(" Passou aqui")
-            localStorage.setItem('_usuario_logado', JSON.stringify(response.data))
+            LocalStorageService.adicionarItem('_usuario_logado', JSON.stringify(response.data))
             this.props.history.push('/home')
         }).catch(erro => {
-            console.log(erro.response.data)
-            this.setState({mensagem: erro.response.data})  
+            mensagemErro(erro.response.data);
         })
     }
 
@@ -48,9 +48,7 @@ class Login extends React.Component {
                         <div className="bs-docs-section">
                             <Card title="Login">
 
-                            <div className="row">
-                              <span>{this.state.mensagem}</span>
-                            </div>
+                            
 
                                 <div className="row">
                                     <div className="col-lg-12">
