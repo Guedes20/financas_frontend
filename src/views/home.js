@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import UsuarioService from '../app/service/usuarioService';
 import LocalStorageService from '../app/service/localstorageService';
-
+  
 class Home extends React.Component {
 
 
@@ -17,7 +17,6 @@ class Home extends React.Component {
 
     componentDidMount() {
         const usuarioLogado = LocalStorageService.obterItem('_usuario_logado') 
-        console.log(usuarioLogado);
   
         this.usuarioService
         .obterSaldoPorUsuaio(usuarioLogado.id)
