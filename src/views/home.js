@@ -5,7 +5,6 @@ import LocalStorageService from '../app/service/localstorageService';
   
 class Home extends React.Component {
 
-
     state = {
         saldo: 0
     }
@@ -41,7 +40,7 @@ class Home extends React.Component {
                         role="button"><i className="fa fa-users"></i>
                         Cadastrar Usuário</a>
                     <a className="btn btn-danger btn-lg"
-                        href="#" role="button">
+                        href="#/cadastro-lancamentos" role="button">
                         <i className="fa fa-users"></i> Cadastrar Lançamento</a>
                 </p>
             </div>

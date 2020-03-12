@@ -25,7 +25,7 @@ export default class LancamentoService extends ApiService {
         ]
     }
 
-    ObterTipoLancamento() {
+    obterTipoLancamento() {
         return [
             { label: 'Selecione..', value: '' },
             { label: 'Despesa', value: 'DESPESA' },
@@ -59,7 +59,11 @@ export default class LancamentoService extends ApiService {
         return this.get(params);
     }
 
-    delete(id){
-        return this.deletar;
+    deletar(id){
+        return this.delete(`/${id}`);
+    }
+
+    salvar(lancamento){
+        return this.post('/',lancamento);
     }
 }
