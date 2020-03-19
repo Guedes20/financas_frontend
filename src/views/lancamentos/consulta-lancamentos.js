@@ -9,6 +9,7 @@ import LocalStorageService from '../../app/service/localstorageService';
 import * as mensagens from '../../compomentes/toast'
 import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
+import { PARENT_MESSAGE_SETUP_ERROR } from 'jest-worker/build/types';
 
 
 class ConsultaLancamentos extends React.Component {
@@ -35,9 +36,7 @@ class ConsultaLancamentos extends React.Component {
         }
 
         const usuarioLogado = LocalStorageService.obterItem('_usuario_logado');
-        console.log(usuarioLogado.id);
-
-
+   
         const lancamentoFiltro = {
             ano: this.state.ano,
             mes: this.state.mes,
@@ -49,14 +48,18 @@ class ConsultaLancamentos extends React.Component {
         this.service
             .consultar(lancamentoFiltro)
             .then(resposta => {
-                this.setState({ lancamentos: resposta.data })
+                const lista = resposta.data; 
+                if(lista.length < 1){
+                    mensagens.mensagemAlert('Nenhum resultado encontrado.')
+                }
+                this.setState({ lancamentos: lista })
             }).catch(error => {
-                console.log(error)
+                mensagens.mensagemErro(error.response.data);
             })
     }
 
-    editar = (lacamento) => {
-        console.log('Editando o lacamento', lacamento.id);
+    editar = (lancamento) => {
+       this.props.history.push(`/cadastro-lancamentos/${lancamento.id}`)
     }
 
     abrirConfirmacao = (lancamento) => {
@@ -82,9 +85,24 @@ class ConsultaLancamentos extends React.Component {
     }
 
     preparaFormularioCadastro = () =>{
-        console.log('passou aqui');
-        this.props.history.push('/cadastro-lancamentos');
+          this.props.history.push('/cadastro-lancamentos');
     }
+
+    alterarStatus = (lancamento, status) => {
+       this.service.alterarStatus(lancamento.id, status).then(rensponse => {
+         const lancamentos = this.state.lancamentos;
+         const index = lancamentos.indexOf(lancamento);
+         if(index !== -1){
+             lancamento['status'] = status;
+             lancamentos[index] = lancamento;
+             this.setState({lancamento});
+         }
+
+        mensagens.mensagemSucesso('Status atualizado com sucesso');
+       })
+
+    }
+
     render() {
 
         const meses = this.service.obterListaMeses();
@@ -138,10 +156,10 @@ class ConsultaLancamentos extends React.Component {
                                     onChange={e => this.setState({ tipo: e.target.value })}
                                 />
                             </FormGroup>
-
-                            <button onClick={this.buscar} type="button" className="btn btn-success">Buscar</button>
-                            <button onClick={this.preparaFormularioCadastro} type="button" className="btn btn-danger">Cadastrar</button>
-
+                            <button onClick={this.buscar} type="button" className="btn btn-success"> 
+                                    <i className="pi pi-search"></i> Buscar</button>
+                            <button onClick={this.preparaFormularioCadastro} type="button" className="btn btn-danger">
+                                    <i className="pi pi-plus"></i> Cadastrar</button>
                         </div>
                     </div>
                 </div>
@@ -150,9 +168,11 @@ class ConsultaLancamentos extends React.Component {
                 <div className="row">
                     <div className="col-md-12">
                         <div className="bs-component">
-                            <LancamentoTable lancamentos={this.state.lancamentos}
+                            <LancamentoTable 
+                                lancamentos={this.state.lancamentos}
                                 deleteAction={this.abrirConfirmacao}
                                 editAction={this.editar}
+                                alterarStatus ={this.alterarStatus}
                             />
                         </div>
                     </div>
@@ -168,8 +188,6 @@ class ConsultaLancamentos extends React.Component {
                         Deseja realmente excluir este Lançamento ?
                                  </Dialog>
                 </div>
-
-
             </Card>
         )
     }

@@ -15,10 +15,11 @@ class Home extends React.Component {
     }
 
     componentDidMount() {
-        const usuarioLogado = LocalStorageService.obterItem('_usuario_logado') 
-  
+        const usuarioLogado = LocalStorageService.obterItem('_usuario_logado'); 
+        console.log(usuarioLogado.id);
+
         this.usuarioService
-        .obterSaldoPorUsuaio(usuarioLogado.id)
+        .obterSaldoPorUsuaio(1)
         .then(response => {
                 this.setState({ saldo: response.data })
             }).catch(error => {
@@ -37,11 +38,12 @@ class Home extends React.Component {
                 <p className="lead">
                     <a className="btn btn-primary btn-lg"
                         href="#/cadastro-usuario"
-                        role="button"><i className="fa fa-users"></i>
-                        Cadastrar Usuário</a>
+                        role="button">
+                        <i className="pi pi-users"></i> Cadastrar Usuário </a>
+
                     <a className="btn btn-danger btn-lg"
                         href="#/cadastro-lancamentos" role="button">
-                        <i className="fa fa-users"></i> Cadastrar Lançamento</a>
+                        <i className="pi pi-money-bill"> </i> Cadastrar Lançamento </a>
                 </p>
             </div>
         )
