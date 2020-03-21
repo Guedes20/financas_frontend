@@ -6,6 +6,8 @@ import SelectMenu from '../../compomentes/selectMenu';
 import LancamentoService from '../../app/service/lancamentoServices';
 import * as mensagens from '../../compomentes/toast';
 import LocalStorageService from '../../app/service/localstorageService';
+import AuthService, { USUARIO_LOGADO } from '../../app/service/authService';
+
 
 
 class CadastroLancamentos extends React.Component {
@@ -60,7 +62,7 @@ class CadastroLancamentos extends React.Component {
     }
 
     submit = () => {
-        const usuarioLogado = LocalStorageService.obterItem('_usuario_logado');
+        const usuarioLogado = LocalStorageService.obterItem(USUARIO_LOGADO);
 
         const { descricao, valor, mes, ano, tipo } = this.state;
         const lancamento = {
@@ -69,7 +71,7 @@ class CadastroLancamentos extends React.Component {
             mes,
             ano,
             tipo,
-            usuario: 1 /*usuarioLogado.id*/
+            usuario: usuarioLogado.id
         };
 
         try{

@@ -9,7 +9,7 @@ import LocalStorageService from '../../app/service/localstorageService';
 import * as mensagens from '../../compomentes/toast'
 import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
-import { PARENT_MESSAGE_SETUP_ERROR } from 'jest-worker/build/types';
+import AuthService, { USUARIO_LOGADO } from '../../app/service/authService';
 
 
 class ConsultaLancamentos extends React.Component {
@@ -35,14 +35,14 @@ class ConsultaLancamentos extends React.Component {
             return false;
         }
 
-        const usuarioLogado = LocalStorageService.obterItem('_usuario_logado');
-   
+        const usuarioLogado = LocalStorageService.obterItem(USUARIO_LOGADO);
+
         const lancamentoFiltro = {
             ano: this.state.ano,
             mes: this.state.mes,
             tipo: this.state.tipo,
             descricao: this.state.descricao,
-            usuario: 1
+            usuario: usuarioLogado.id
 
         }
         this.service

@@ -1,8 +1,11 @@
 import React from 'react';
-import axios from 'axios';
 import UsuarioService from '../app/service/usuarioService';
 import LocalStorageService from '../app/service/localstorageService';
+import AuthService, { USUARIO_LOGADO } from '../app/service/authService';
+import { AuthContext } from '../main/provedorAutenticacao';
   
+
+
 class Home extends React.Component {
 
     state = {
@@ -15,15 +18,14 @@ class Home extends React.Component {
     }
 
     componentDidMount() {
-        const usuarioLogado = LocalStorageService.obterItem('_usuario_logado'); 
-        console.log(usuarioLogado.id);
+        const usuarioLogado = this.context.usuarioAutenticado;
 
         this.usuarioService
-        .obterSaldoPorUsuaio(1)
+        .obterSaldoPorUsuaio(usuarioLogado.id)
         .then(response => {
                 this.setState({ saldo: response.data })
             }).catch(error => {
-                console.error(error.response)
+                console.error(error.response.data)
             })
     }
 
@@ -52,4 +54,5 @@ class Home extends React.Component {
 
 }
 
+Home.contextType = AuthContext;
 export default Home;
